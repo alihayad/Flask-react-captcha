@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import "./App.css";
 
 function App() {
-  let [src, setSrc] = useState("");
-  let [text, setText] = useState("");
-  let [CaptchaAnswer, setCaptchaAnswer] = useState({
+  let [iamgeSrc, setImageSrc] = useState("");
+  let [enteredText, setEnteredText] = useState("");
+  let [captchaAnswer, setCaptchaAnswer] = useState({
 answered:false,
 answer:"",
 text:"",
@@ -16,9 +16,9 @@ const reloadCaptcha=()=>{
   fetch("http://127.0.0.1:5000/api/captcha",{credentials: "include"})
   .then((response) => response.json())
   .then((data) => {
-    setSrc(data.img);
+    setImageSrc(data.img);
   });
-  setText("")
+  setEnteredText("")
 }
   useEffect(() => {
     reloadCaptcha()
@@ -29,7 +29,7 @@ const reloadCaptcha=()=>{
     fetch("http://127.0.0.1:5000/api/check", {
       credentials: "include",
       method: "POST",
-      body: JSON.stringify({ txt: text }),
+      body: JSON.stringify({ txt: enteredText }),
       headers: {
         'Content-Type': 'application/json'
       
@@ -39,7 +39,6 @@ const reloadCaptcha=()=>{
         return response.json();
       })
       .then(function (data) {
-       console.log(data)
        if(data.catchaAnswer===false){
         setCaptchaAnswer({answered:true,answer:"Wrong captcha answer",textClass:"wrong-captcha-paragraph",inputClass:"wrong-captcha"})
         reloadCaptcha()
@@ -49,19 +48,19 @@ const reloadCaptcha=()=>{
       });
   };
   const textChangeHandler = (event) => {
-    setText(event.target.value);
+    setEnteredText(event.target.value);
   };
 
   return (
     <div className="App">
-      <img src={src} alt="Logo" />
+      <img src={iamgeSrc} alt="Logo" />
       <form onSubmit={captchaFormHandler}>
         <label>
           Captcha:
           <input
-          className={CaptchaAnswer.answered?CaptchaAnswer.inputClass:null}
+          className={captchaAnswer.answered?captchaAnswer.inputClass:null}
             onChange={textChangeHandler}
-            value={text}
+            value={enteredText}
             type="text"
             name="captcha"
           required/>
@@ -69,7 +68,7 @@ const reloadCaptcha=()=>{
         <button type="submit">Submit</button>
       </form>
       <button onClick={reloadCaptcha}>refresh</button>
-      {CaptchaAnswer.answered?<p className={CaptchaAnswer.textClass}>{CaptchaAnswer.answer}</p>:null}
+      {captchaAnswer.answered?<p className={captchaAnswer.textClass}>{captchaAnswer.answer}</p>:null}
     </div>
   );
 }

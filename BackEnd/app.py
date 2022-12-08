@@ -10,12 +10,12 @@ CORS(app, supports_credentials=True, origins=["http://127.0.0.1:3000"])
 @app.route('/api/captcha', methods = ['GET'])
 def generate_captcha(): 
    image = ImageCaptcha(width = 300, height = 100)
-   word1=str(''.join(random.choices(string.hexdigits + string.digits, k = 4)))
-   word2=str(''.join(random.choices(string.hexdigits + string.digits, k = 4)))
-   captcha_text =word1+' '+word2
+   word_1=str(''.join(random.choices(string.hexdigits + string.digits, k = 4)))
+   word_2=str(''.join(random.choices(string.hexdigits + string.digits, k = 4)))
+   captcha_text =word_1+' '+word_2
    session['captcha']=captcha_text 
-   imgData = image.generate(captcha_text)
-   img_str = "data:image/png;base64," + base64.b64encode(imgData.getvalue()).decode()   
+   img_data = image.generate(captcha_text)
+   img_str = "data:image/png;base64," + base64.b64encode(img_data.getvalue()).decode()   
    return (jsonify({'img':img_str}),200,{'Content-Type': 'application/json'})
  
 @app.route('/api/check', methods = ['POST'])

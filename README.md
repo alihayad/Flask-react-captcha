@@ -19,3 +19,5 @@ Other Information :
 
 references :
 https://www.geeksforgeeks.org/generate-captcha-using-python/
+
+![architecture](https://user-images.githubusercontent.com/33245901/206473928-83d380a9-3734-4f2e-a69f-a4e3f197914f.png)

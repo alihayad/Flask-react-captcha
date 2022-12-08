@@ -4,7 +4,7 @@ import "./App.css";
 function App() {
   let [src, setSrc] = useState("");
   let [text, setText] = useState("");
-  let [wrongCaptcha, setWrongCaptcha] = useState({
+  let [CaptchaAnswer, setCaptchaAnswer] = useState({
 answered:false,
 answer:"",
 text:"",
@@ -18,7 +18,7 @@ const reloadCaptcha=()=>{
   .then((data) => {
     setSrc(data.img);
   });
-
+  setText("")
 }
   useEffect(() => {
     reloadCaptcha()
@@ -41,10 +41,10 @@ const reloadCaptcha=()=>{
       .then(function (data) {
        console.log(data)
        if(data.catchaAnswer===false){
-        setWrongCaptcha({answered:true,answer:"Wrong captcha answer",textClass:"wrong-captcha-paragraph",inputClass:"wrong-captcha"})
+        setCaptchaAnswer({answered:true,answer:"Wrong captcha answer",textClass:"wrong-captcha-paragraph",inputClass:"wrong-captcha"})
         reloadCaptcha()
        }else{
-        setWrongCaptcha({answered:true,answer:"Right captcha answer",textClass:"right-captcha-paragraph",inputClass:""})
+        setCaptchaAnswer({answered:true,answer:"Right captcha answer",textClass:"right-captcha-paragraph",inputClass:""})
        }
       });
   };
@@ -59,17 +59,17 @@ const reloadCaptcha=()=>{
         <label>
           Captcha:
           <input
-          className={wrongCaptcha.answered?wrongCaptcha.inputClass:null}
+          className={CaptchaAnswer.answered?CaptchaAnswer.inputClass:null}
             onChange={textChangeHandler}
             value={text}
             type="text"
             name="captcha"
-          />
+          required/>
         </label>
         <button type="submit">Submit</button>
       </form>
       <button onClick={reloadCaptcha}>refresh</button>
-      {wrongCaptcha.answered?<p className={wrongCaptcha.textClass}>{wrongCaptcha.answer}</p>:null}
+      {CaptchaAnswer.answered?<p className={CaptchaAnswer.textClass}>{CaptchaAnswer.answer}</p>:null}
     </div>
   );
 }

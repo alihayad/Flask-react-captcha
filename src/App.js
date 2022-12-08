@@ -53,7 +53,9 @@ const reloadCaptcha=()=>{
 
   return (
     <div className="App">
+      <p>Prove you are not a Robot</p>
       <img src={iamgeSrc} alt="Logo" />
+      <p>Enter the 2 pieces of text</p>
       <form onSubmit={captchaFormHandler}>
         <label>
           Captcha:
